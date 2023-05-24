@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Configuration, OpenAIApi } from "openai";
 import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
 import { Skeleton } from "../../components/Skeleton";
+import { Frame } from "../../components/Frame";
 const configuration = new Configuration({
   organization: "org-IbN8qtDM4FvS3IByygJnFQSO",
   apiKey: "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", // TODO: move to env
@@ -80,18 +81,20 @@ export default function Landing() {
         </div>
 
         <div className="relative mt-10 w-[512px] h-[512px]">
-          {error && <p className="text-red-500">{error}</p>}
-          {imageUrl && (
-            <Image
-              className="absolute rounded-lg shadow-lg"
-              src={imageUrl}
-              width={512}
-              height={512}
-              onLoadingComplete={onLoadingComplete}
-              alt={prompt ?? "generated poster image"}
-            />
-          )}
-          {isLoading && <Skeleton className="absolute" />}
+          <Frame isLoading={isLoading}>
+            <div className="w-full h-full border-2 border-b-gray-200 border-r-gray-200 border-t-gray-400 border-l-gray-400">
+              {imageUrl && (
+                <Image
+                  className="border-2 border-b-gray-200 border-r-gray-200 border-t-gray-400 border-l-gray-400"
+                  src={imageUrl}
+                  width={512}
+                  height={512}
+                  onLoadingComplete={onLoadingComplete}
+                  alt={prompt ?? "generated poster image"}
+                />
+              )}
+            </div>
+          </Frame>
         </div>
         <div className="mt-10">
           {urlList.length !== 0 && (
