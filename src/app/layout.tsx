@@ -21,8 +21,8 @@ export default function RootLayout({
           <>
             <Appbar />
             <Allotment className="w-screen h-screen">
-              <Allotment.Pane minSize={200} className="h-full w-full bg-yellow-500">{children}</Allotment.Pane>
-              <Allotment.Pane minSize={200} className="h-full w-full bg-blue-500">
+              <Allotment.Pane className="h-full w-full">{children}</Allotment.Pane>
+              <Allotment.Pane minSize={20} className="h-full w-full">
                 <Sidepanel />
               </Allotment.Pane>
             </Allotment>
