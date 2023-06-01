@@ -1,28 +1,75 @@
 "use client";
 
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
 
 const Sidepanel = () => {
   const { isLoading, mediaRequested } = useProcessVisualization();
   return (
-    <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-100 to-slate-300 h-full p-24 z-10 w-full max-w-5xlfont-mono text-sm">
-      <p className="dark:text-slate-50 text-2xl mb-10">What's happening?</p>
-      {isLoading && (
-        <div className="p-4 text-slate-100 border-2 bg-slate-700 rounded-lg border-slate-600">
-          Requesting image creation from OpenAI...
+    <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-full p-24 z-10 w-full max-w-5xlfont-mono text-sm">
+      <p className="text-slate-50 text-2xl">What's happening?</p>
+      <div className="mt-10">
+        <div className="flex gap-8">
+          <AnimatePresence>
+            {mediaRequested && (
+              <>
+                <motion.div
+                  animate={{
+                    boxShadow: "9px 9px 35px #0c1018,-9px -9px 35px #30425e",
+                  }}
+                  transition={{ duration: 1, delay: 1 }}
+                  className="relative w-40 h-auto aspect-square p-6 border-0 border-white rounded-full"
+                >
+                  <motion.div className="absolute left-0 p-10 text-white top-0 bg-slate-800 w-full h-full rounded-full"></motion.div>
+                </motion.div>
+                <div className="text-slate-50">
+                  <p className="text-lg font-bold">
+                    lorem ipsum dolor sit amet
+                  </p>
+                  <p className="text-lg">
+                    lorem ipsum dolor sit amet. loremasd asdiue caadx
+                  </p>
+                  <div className="relative mt-5 w-[200px]">
+                    <motion.div
+                      animate={{
+                        width: 200,
+                      }}
+                      transition={{ duration: 1, delay: 2 }}
+                      className="absolute h-2 bg-white w-0 rounded-full"
+                    ></motion.div>
+                    <motion.div
+                      animate={{
+                        height: 150,
+                      }}
+                      transition={{ duration: 1, delay: 3 }}
+                      className="absolute right-0 h-0 bg-white w-2 rounded-full"
+                    ></motion.div>
+                  </div>
+                </div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
-      )}
-      {!isLoading && mediaRequested && (
-        <>
-          <div className="p-4 text-slate-100 border-2 bg-slate-700 rounded-lg border-slate-600">
-            Requesting image creation from OpenAI...
-          </div>
-          <div className="mt-4 p-4 text-slate-100 border-2 bg-slate-700 rounded-lg border-slate-600">
-            OpenAi generated an image with the given prompt input.
-          </div>
-        </>
-      )}
+        <AnimatePresence>
+          {mediaRequested && (
+            <motion.div
+              animate={{
+                boxShadow: "9px 9px 35px #0c1018,-9px -9px 35px #30425e",
+              }}
+              transition={{ duration: 1, delay: 3.5 }}
+              className="mt-20 px-10 py-6 rounded-full w-fit text-slate-50"
+            >
+              <div>
+                <p className="text-sm font-bold">lorem ipsum dolor sit amet</p>
+                <p className="text-base">
+                  lorem ipsum dolor sit amet. loremasd asdiue caadx
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
