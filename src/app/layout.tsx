@@ -22,7 +22,7 @@ export default function RootLayout({
             <Appbar />
             <Allotment className="w-screen h-screen">
               <Allotment.Pane className="h-full w-full">{children}</Allotment.Pane>
-              <Allotment.Pane minSize={20} className="h-full w-full">
+              <Allotment.Pane preferredSize={'25%'} minSize={20} className="h-full w-full">
                 <Sidepanel />
               </Allotment.Pane>
             </Allotment>

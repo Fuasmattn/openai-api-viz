@@ -1,12 +1,11 @@
 import { Skeleton } from "./Skeleton";
 
-export const Frame = ({
-  children,
-  isLoading,
-}: {
+interface Props {
   children?: React.ReactElement;
   isLoading?: boolean;
-}) => {
+}
+
+export const Frame = ({ children, isLoading }: Props) => {
   return (
     <div className="w-full h-full p-6 shadow-frame-outer bg-gradient-to-tr from-gray-800 to-gray-600 dark:from-gray-800 dark:to-gray-600">
       <div className="relative w-full h-full shadow-frame bg-white">

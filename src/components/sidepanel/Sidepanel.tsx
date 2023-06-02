@@ -3,13 +3,29 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
+import { AudioRecorder } from "../audiorecorder/AudioRecorder";
 
 const Sidepanel = () => {
-  const { isLoading, mediaRequested } = useProcessVisualization();
+  const { isLoading, isRecording, setIsRecording, mediaRequested } =
+    useProcessVisualization();
+
   return (
-    <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-full p-24 z-10 w-full max-w-5xlfont-mono text-sm">
-      <p className="text-slate-50 text-2xl">What's happening?</p>
+    <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-full py-16 px-24 z-10 w-full max-w-5xlfont-mono text-sm">
+      <p className="text-slate-50 text-2xl">What&#39;s happening?</p>
       <div className="mt-10">
+        <>
+          <motion.div
+            className="text-slate-50 flex items-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+            }}
+            transition={{ duration: 1, delay: 0 }}
+          >
+            <AudioRecorder />
+          </motion.div>
+        </>
+
         <div className="flex gap-8">
           <AnimatePresence>
             {mediaRequested && (
