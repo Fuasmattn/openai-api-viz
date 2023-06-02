@@ -93,7 +93,7 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
       <div className="flex items-center justify-center gap-4">
         {isRecording && (
           <button
-            className="w-8 h-8 text-purple-500 hover:text-purple-700 active:text-purple-400"
+            className="w-8 h-8 text-pink-500 hover:text-pink-700 active:text-pink-400"
             onClick={onStop}
           >
             <svg

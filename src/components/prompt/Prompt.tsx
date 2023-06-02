@@ -27,7 +27,7 @@ export const Prompt = ({
             id="prompt"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="h-14 pr-24 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
+            className="h-14 pr-24 bg-white border-2 border-gray-900 text-gray-900 text-md rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
             placeholder="Colorful cartoon portrait of Stevie Wonder"
             required
             data-1p-ignore
@@ -39,7 +39,7 @@ export const Prompt = ({
               <button
                 disabled={isRecording || isLoading}
                 onClick={onStartRecording}
-                className="hover:cursor-pointer p-4 pr-5 flex justify-center items-center text-purple-500 hover:text-purple-700 active:text-purple-400"
+                className="hover:cursor-pointer p-4 pr-5 flex justify-center items-center text-pink-500 hover:text-pink-700 active:text-pink-400"
               >
                 <svg
                   className="h-6"
@@ -61,7 +61,7 @@ export const Prompt = ({
                 duration: 4,
                 repeat: Infinity,
               }}
-              className="pointer-events-none absolute text-purple-500 top-4 right-5 w-6 h-6 rounded-full"
+              className="pointer-events-none absolute text-pink-500 top-4 right-5 w-6 h-6 rounded-full"
             >
               <svg
                 fill="currentColor"

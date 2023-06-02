@@ -24,7 +24,7 @@ export default function Landing() {
   } = useProcessVisualization();
   const [prompt, setPrompt] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>('/default.jpg');
+  const [imageUrl, setImageUrl] = useState<string>("/default.jpg");
   const [urlList, setUrlList] = useState<PromptHistoryItem[]>([
     {
       url: "/default.jpg",
