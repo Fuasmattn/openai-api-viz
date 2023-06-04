@@ -103,9 +103,15 @@ export default function Landing() {
   return (
     <main className="dark:bg-slate-900 bg-slate-100 min-h-screen py-16 flex justify-center">
       <div className="px-10 w-4/5 max-w-3xl">
-        <h2 className="dark:text-white text-2xl mb-10 text-center">
-          Create your poster
-        </h2>
+        <h2 className="dark:text-white text-2xl mb-6">Create your poster</h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-sm text-slate-500 mb-8"
+        >
+          Describe the image you want to create and press Enter. You can type a
+          description or express yourself using your voice.
+        </motion.p>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -140,9 +146,9 @@ export default function Landing() {
               }}
             />
           ))}
-          {Array.from(Array(100 - thumbs.length)).map((item) => (
+          {Array.from(Array(100 - thumbs.length)).map((p, i) => (
             <div
-              key={item}
+              key={`placeholder-${i}`}
               className="rounded-lg dark:bg-slate-800 bg-slate-200 h-[80px] w-auto"
             />
           ))}
