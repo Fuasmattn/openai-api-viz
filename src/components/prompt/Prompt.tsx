@@ -18,7 +18,7 @@ export const Prompt = ({
   onStartRecording,
 }: Props) => {
   return (
-    <form className="flex gap-2 w-full" onSubmit={handleSubmit}>
+    <form className="flex gap-8 w-full items-center" onSubmit={handleSubmit}>
       <div className="relative w-full">
         <input
           disabled={isRecording || isLoading}
@@ -31,14 +31,14 @@ export const Prompt = ({
           required
           data-1p-ignore
         />
-        <input className="opacity-0" type="submit"></input>
+        <input type="submit" className="w-0 h-0 hidden"></input>
 
         <div className="absolute top-0 right-0">
           {!isRecording && (
             <button
               disabled={isRecording || isLoading}
               onClick={onStartRecording}
-              className="hover:cursor-pointer p-4 pr-5 flex justify-center items-center text-pink-500 hover:text-pink-700 active:text-pink-400"
+              className="hover:cursor-pointer p-4 pr-5 flex justify-center items-center text-pink-500 hover:text-pink-700 active:text-pink-400 disabled:text-neutral-400"
             >
               <svg
                 className="h-6"
@@ -77,6 +77,12 @@ export const Prompt = ({
           </motion.div>
         )}
       </div>
+      <input
+        disabled={isLoading || isRecording}
+        className="font-sans px-8 py-3 rounded-full font-bold text-white text-xl bg-pink-500 hover:bg-pink-600 active:bg-pink-700 focus:bg-pink-600 disabled:bg-neutral-400 active:text-neutral-100"
+        type="submit"
+        value="Create"
+      ></input>
     </form>
   );
 };

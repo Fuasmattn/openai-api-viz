@@ -137,6 +137,7 @@ export default function Landing() {
               key={item.url + "thumb"}
               className="rounded-lg hover:cursor-pointer hover:shadow-lg brightness-75 hover:brightness-100 transition-all"
               src={item.url}
+              title={item.prompt}
               width={1000}
               height={1000}
               alt={item.prompt}

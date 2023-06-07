@@ -1,16 +1,16 @@
 {
-  "name": "ai-shop",
+  "name": "openai-viz",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3003",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@maibornwolff/mwui-react": "^0.3.1",
-    "@maibornwolff/mwui-stencil": "^0.3.0",
+    "@maibornwolff/mwui-react": "^0.4.12",
+    "@maibornwolff/mwui-stencil": "^0.4.2",
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
