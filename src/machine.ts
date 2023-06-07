@@ -53,15 +53,11 @@ export const machine = createMachine(
       },
       imageGenerationSuccess: {
         entry: "handleImageGenerationSuccess",
-        on: {
-          RESET: "idle",
-        },
+        always: "idle",
       },
       imageGenerationFailure: {
         entry: "handleImageGenerationFailure",
-        on: {
-          RESET: "idle",
-        },
+        always: "idle",
       },
       recording: {
         entry: "handleRecording",

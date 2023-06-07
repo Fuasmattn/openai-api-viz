@@ -4,7 +4,8 @@
   export interface Typegen0 {
         '@@xstate/typegen': true;
         internalEvents: {
-          "done.invoke.machine.imageGenerationLoading:invocation[0]": { type: "done.invoke.machine.imageGenerationLoading:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
+          "": { type: "" };
+"done.invoke.machine.imageGenerationLoading:invocation[0]": { type: "done.invoke.machine.imageGenerationLoading:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "done.invoke.machine.transcriptionLoading:invocation[0]": { type: "done.invoke.machine.transcriptionLoading:invocation[0]"; data: unknown; __tip: "See the XState TS docs to learn how to strongly type this." };
 "error.platform.machine.imageGenerationLoading:invocation[0]": { type: "error.platform.machine.imageGenerationLoading:invocation[0]"; data: unknown };
 "error.platform.machine.transcriptionLoading:invocation[0]": { type: "error.platform.machine.transcriptionLoading:invocation[0]"; data: unknown };
@@ -26,7 +27,7 @@
 "handleRecording": "START_RECORDING";
 "handleTranscriptionFailure": "error.platform.machine.transcriptionLoading:invocation[0]";
 "handleTranscriptionSuccess": "done.invoke.machine.transcriptionLoading:invocation[0]";
-"initialize": "RESET" | "UPDATE_PROMPT" | "xstate.init";
+"initialize": "" | "RESET" | "UPDATE_PROMPT" | "xstate.init";
 "startImageGenerationLoading": "SUBMIT" | "done.invoke.machine.transcriptionLoading:invocation[0]";
 "startTranscriptionLoading": "STOP_RECORDING";
         };
