@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-
+// TODO: deprecate/remove
 export const ProcessVisualizationContext = createContext({
   mediaRequested: false,
   isLoading: false,

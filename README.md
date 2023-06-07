@@ -16,6 +16,8 @@ pnpm dev
 
 Open [http://localhost:3003](http://localhost:3003) with your browser to see the result.
 
+> 💡 For autogeneration of state machine typings and visual editing and inspection of machine you can use the [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=statelyai.stately-vscode).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,32 +1,30 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
+import { useActor } from "@xstate/react";
+import { useMachineService } from "../../context/GlobalContext";
 
 export const AudioRecorder = ({ className }: { className?: string }) => {
-  const {
-    setIsRecording,
-    isRecording,
-    startRecording,
-    setStartRecording,
-    setAudioClip,
-    setAudioBlob,
-    audioClip,
-  } = useProcessVisualization();
+  const { setStartRecording, setAudioClip, audioClip } =
+    useProcessVisualization();
+
+  const [state, send] = useActor(useMachineService().service);
+
+  const startRecording = state.matches("recording");
+  const isRecording = state.matches("recording");
+
   let mediaRecorder: MediaRecorder;
   let chunks: any[] = [];
 
   const onStop = () => {
-    setIsRecording(false);
-    setStartRecording(false);
     mediaRecorder?.stop();
   };
 
   const onStopMediaRecorder = () => {
-    console.log("stop the recording");
-
     const blob = new Blob(chunks, { type: "audio/mp3; codecs=opus" });
     chunks = [];
     setAudioClip(window.URL.createObjectURL(blob));
-    setAudioBlob(blob);
+
+    send({ type: "STOP_RECORDING", params: { blob } });
   };
 
   const onStart = () => {
@@ -43,7 +41,7 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
         // Success callback
         .then((stream) => {
           console.log("on stream update...");
-          setIsRecording(true);
+
           mediaRecorder = new MediaRecorder(stream);
 
           mediaRecorder.start();
@@ -62,7 +60,6 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
 
         // Error callback
         .catch((err) => {
-          // setIsRecording(false);
           mediaRecorder?.stop();
           console.error(`The following getUserMedia error occurred: ${err}`);
         });
@@ -110,7 +107,6 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
             </svg>
           </button>
         )}
-        {isRecording && <p> Recording...</p>}
       </div>
       {audioClip && <audio src={audioClip} controls></audio>}
     </div>
