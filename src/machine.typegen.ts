@@ -27,7 +27,7 @@
 "handleRecording": "START_RECORDING";
 "handleTranscriptionFailure": "error.platform.machine.transcriptionLoading:invocation[0]";
 "handleTranscriptionSuccess": "done.invoke.machine.transcriptionLoading:invocation[0]";
-"initialize": "" | "RESET" | "UPDATE_PROMPT" | "xstate.init";
+"initialize": "" | "UPDATE_PROMPT" | "xstate.init";
 "startImageGenerationLoading": "SUBMIT" | "done.invoke.machine.transcriptionLoading:invocation[0]";
 "startTranscriptionLoading": "STOP_RECORDING";
         };

@@ -66,7 +66,6 @@ export const machine = createMachine(
             target: "transcriptionLoading",
             cond: (context, event) => event.params && event.params.blob,
           },
-          RESET: "idle",
         },
       },
       transcriptionLoading: {
@@ -85,16 +84,14 @@ export const machine = createMachine(
       },
       transcriptionFailure: {
         entry: "handleTranscriptionFailure",
-        on: {
-          RESET: "idle",
-        },
+        always: "idle",
       },
     },
   },
   {
     actions: {
       initialize: assign({
-        prompt: (context, event) => (event.params ? event.params.prompt : ""),
+        prompt: (context, event) => (event.params ? event.params.prompt : context.prompt),
       }),
       startImageGenerationLoading: assign({
         prompt: (context, event) =>
