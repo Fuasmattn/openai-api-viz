@@ -14,6 +14,7 @@
     "@types/node": "20.2.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@xstate/inspect": "^0.8.0",
     "@xstate/react": "^3.2.2",
     "allotment": "^1.19.0",
     "autoprefixer": "10.4.14",

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
 import { useActor } from "@xstate/react";
-import { useMachineService } from "../../context/GlobalContext";
 import { ActorRefFrom } from "xstate";
-import { EventTypes, machine } from "../../state/machine";
+import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
+import { useMachineService } from "../../context/GlobalContext";
+import { StateEventTypes, machine } from "../../state/machine";
 
 export const AudioRecorder = ({ className }: { className?: string }) => {
   const { setStartRecording, setAudioClip, audioClip } =
@@ -26,7 +26,7 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
     chunks = [];
     setAudioClip(window.URL.createObjectURL(blob));
 
-    send({ type: EventTypes.STOP_RECORDING, params: { blob } });
+    send({ type: StateEventTypes.STOP_RECORDING, params: { blob } });
   };
 
   const onStart = () => {

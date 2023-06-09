@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Prompt } from "../components/prompt/Prompt";
 import { useActor } from "@xstate/react";
-import { useMachineService } from "../context/GlobalContext";
 import { ActorRefFrom } from "xstate";
-import { EventTypes, machine } from "../state/machine";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Prompt } from "../components/prompt/Prompt";
+import { useMachineService } from "../context/GlobalContext";
+import { StateEventTypes, machine } from "../state/machine";
 
 export default function Landing() {
   const [state, send] = useActor(
     useMachineService().service as ActorRefFrom<typeof machine>
   );
 
-  const isLoading = state.matches("imageGenerationLoading");
+  const isLoading =
+    state.matches("imageGenerationLoading") || state.matches("fetchImage");
   const isRecording = state.matches("recording");
   const { url, prompt } = state.context;
 
@@ -22,15 +22,23 @@ export default function Landing() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    send({ type: EventTypes.SUBMIT });
+    send({ type: StateEventTypes.SUBMIT });
   };
 
   const onChange = (value: string) => {
-    send({ type: EventTypes.UPDATE_PROMPT, params: { prompt: value } });
+    send({ type: StateEventTypes.UPDATE_PROMPT, params: { prompt: value } });
   };
 
   const onClickRecordStart = () => {
-    send({ type: EventTypes.START_RECORDING });
+    send({ type: StateEventTypes.START_RECORDING });
+  };
+
+  const onLoadingComplete = () => {
+    send({ type: StateEventTypes.FETCH_IMAGE_SUCCESS });
+  };
+
+  const onErrorLoadingImage = () => {
+    send({ type: StateEventTypes.FETCH_IMAGE_FAILURE });
   };
 
   return (
@@ -96,7 +104,8 @@ export default function Landing() {
               src={url}
               width={1000}
               height={1000}
-              // onLoadingComplete={}
+              onError={onErrorLoadingImage}
+              onLoadingComplete={onLoadingComplete}
               alt={prompt ?? "generated poster image"}
             />
           )}

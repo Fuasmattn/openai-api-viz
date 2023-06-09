@@ -61,7 +61,7 @@ export default function RootLayout({
                   {children}
                 </Allotment.Pane>
                 <Allotment.Pane
-                  preferredSize="25%"
+                  preferredSize="60%"
                   minSize={20}
                   className="h-full w-full"
                 >

@@ -1,89 +1,86 @@
 "use client";
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { AudioRecorder } from "../audiorecorder/AudioRecorder";
-import { useActor } from "@xstate/react";
-import { useMachineService } from "../../context/GlobalContext";
+import React, { useEffect, useRef, useState } from "react";
 import { ActorRefFrom } from "xstate";
+import { useActor } from "@xstate/react";
+import { inspect } from "@xstate/inspect";
+import { AudioRecorder } from "../audiorecorder/AudioRecorder";
+import { useMachineService } from "../../context/GlobalContext";
 import { machine } from "../../state/machine";
 
+const statecharts = "https://statecharts.io/inspect";
+const stately = "https://stately.ai/viz?inspect";
+
 const Sidepanel = () => {
-  const [state, send] = useActor(useMachineService().service as ActorRefFrom<typeof machine>);
+  const [state, send] = useActor(
+    useMachineService().service as ActorRefFrom<typeof machine>
+  );
+
+  const [showInspect, setShowInspect] = useState(false);
+  const [useStately, setUseStately] = useState(false);
+
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (iframeRef.current && typeof window !== "undefined") {
+      inspect({
+        url: useStately ? stately : statecharts,
+        iframe: iframeRef.current,
+      });
+    }
+  }, [iframeRef, useStately]);
 
   return (
-    <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-full py-16 px-24 z-10 w-full max-w-5xlfont-mono text-sm">
-      <p className="text-slate-50 text-2xl">What&#39;s happening?</p>
-      <p className="text-slate-50">{state.context.message}</p>
-      <AudioRecorder />
-      {/* <div className="mt-10">
-        <>
-          <motion.div
-            className="text-slate-50 flex items-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-            }}
-            transition={{ duration: 1, delay: 0 }}
-          >
-            <AudioRecorder />
-          </motion.div>
-        </>
+    <div className="flex flex-col bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-screen px-6 py-5 z-10 w-full max-w-5xlfont-mono text-sm">
+      <div>
+        <p className="text-slate-50 text-2xl mb-6">Behind the Scenes</p>
+        {/* @ts-ignore */}
+        <p className="text-slate-50 text-base">Current state: {state.value}</p>
+        <p className="text-slate-50">{state.context.message}</p>
+        <AudioRecorder />
+      </div>
+      <div className="mt-6 h-full">
+        <iframe
+          className={`w-full h-full ${!showInspect && "hidden"}`}
+          ref={iframeRef}
+          id="xstate"
+        ></iframe>
+      </div>
 
-        <div className="flex gap-8">
-          <AnimatePresence>
-            <>
-              <motion.div
-                animate={{
-                  boxShadow: "9px 9px 35px #0c1018,-9px -9px 35px #30425e",
-                }}
-                transition={{ duration: 1, delay: 1 }}
-                className="relative w-40 h-auto aspect-square p-6 border-0 border-white rounded-full"
-              >
-                <motion.div className="absolute left-0 p-10 text-white top-0 bg-slate-800 w-full h-full rounded-full"></motion.div>
-              </motion.div>
-              <div className="text-slate-50">
-                <p className="text-lg font-bold">lorem ipsum dolor sit amet</p>
-                <p className="text-lg">
-                  lorem ipsum dolor sit amet. loremasd asdiue caadx
-                </p>
-                <div className="relative mt-5 w-[200px]">
-                  <motion.div
-                    animate={{
-                      width: 200,
-                    }}
-                    transition={{ duration: 1, delay: 2 }}
-                    className="absolute h-2 bg-white w-0 rounded-full"
-                  ></motion.div>
-                  <motion.div
-                    animate={{
-                      height: 150,
-                    }}
-                    transition={{ duration: 1, delay: 3 }}
-                    className="absolute right-0 h-0 bg-white w-2 rounded-full"
-                  ></motion.div>
-                </div>
-              </div>
-            </>
-          </AnimatePresence>
-        </div>
-        <AnimatePresence>
-          <motion.div
-            animate={{
-              boxShadow: "9px 9px 35px #0c1018,-9px -9px 35px #30425e",
-            }}
-            transition={{ duration: 1, delay: 3.5 }}
-            className="mt-20 px-10 py-6 rounded-full w-fit text-slate-50"
+      <div className="flex gap-4">
+        <div className="flex items-center mt-6 px-4 mb-4 border border-slate-700 rounded">
+          <input
+            id="bordered-checkbox-1"
+            type="checkbox"
+            checked={showInspect}
+            onChange={() => setShowInspect(!showInspect)}
+            name="bordered-checkbox"
+            className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            htmlFor="bordered-checkbox-1"
+            className="w-full py-4 ml-2 text-sm font-medium text-white"
           >
-            <div>
-              <p className="text-sm font-bold">lorem ipsum dolor sit amet</p>
-              <p className="text-base">
-                lorem ipsum dolor sit amet. loremasd asdiue caadx
-              </p>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div> */}
+            Show xstate inspector
+          </label>
+        </div>
+        <div className="flex items-center mt-6 px-4 mb-4 border border-slate-700 rounded">
+          <input
+            id="bordered-checkbox-1"
+            type="checkbox"
+            checked={useStately}
+            onChange={() => setUseStately(!useStately)}
+            name="bordered-checkbox"
+            className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            htmlFor="bordered-checkbox-1"
+            className="w-full py-4 ml-2 text-sm font-medium text-white"
+          >
+            Use stately.ai
+          </label>
+        </div>
+      </div>
     </div>
   );
 };

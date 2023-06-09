@@ -20,7 +20,8 @@ export const GlobalContextProvider = ({
 }: {
   children: React.ReactElement;
 }) => {
-  const service = useInterpret(machine);
+  // @ts-ignore
+  const service = useInterpret(machine,  { devTools: true });
   return (
     <GlobalContext.Provider
       value={{

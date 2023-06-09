@@ -27,7 +27,7 @@ export const Prompt = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="h-14 pl-4 pr-24 bg-white shadow-xl transition-shadow focus:shadow-none focus:border-2 border-0 border-gray-900 text-gray-900 text-md rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
-          placeholder="Colorful cartoon portrait of Stevie Wonder"
+          placeholder="Cyberpunk city at night, cinematic"
           required
           data-1p-ignore
         />

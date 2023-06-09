@@ -3,36 +3,48 @@ import { StateEvents, StateContext } from "./machine";
 
 export const actions = {
   initialize: assign<StateContext, StateEvents>({
+    message: "",
     prompt: (StateContext, event) =>
       event.params ? event.params.prompt : StateContext.prompt,
-  }) as any,
+  }),
   startImageGenerationLoading: assign<StateContext, StateEvents>({
     prompt: (StateContext, event) =>
       event.params ? event.params.prompt : StateContext.prompt,
     message: "requesting image generation",
-  }) as any,
+  }),
   handleImageGenerationSuccess: assign<StateContext, StateEvents>({
     url: (_, event) => event.data.url,
     error: null,
     message: "image generation successful",
-  }) as any,
+  }),
+  handleFetchImage: assign<StateContext, StateEvents>({
+    message: "fetching image",
+  }),
+  handleFetchImageSuccess: assign<StateContext, StateEvents>({
+    error: null,
+    message: "image fetching succesful",
+  }),
+  handleFetchImageFailure: assign<StateContext, StateEvents>({
+    error: "failed to retrieve image from url",
+    message: "image fetching failed",
+  }),
   handleImageGenerationFailure: assign<StateContext, StateEvents>({
     url: "",
     error: (_, event) => event.data.error,
     message: "image generation failed",
-  }) as any,
+  }),
   handleRecording: assign<StateContext, StateEvents>({
     message: "start recording",
-  }) as any,
+  }),
   startTranscriptionLoading: assign<StateContext, StateEvents>({
     message: "requesting transcription",
-  }) as any,
+  }),
   handleTranscriptionSuccess: assign<StateContext, StateEvents>({
     prompt: (_, event) => event.data.text,
     message: "transcription successful",
-  }) as any,
+  }),
   handleTranscriptionFailure: assign<StateContext, StateEvents>({
     prompt: "",
     message: "transcription failure",
-  }) as any,
-};
+  }),
+} as any;
