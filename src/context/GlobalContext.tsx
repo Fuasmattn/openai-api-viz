@@ -2,7 +2,7 @@
 
 import { useInterpret } from "@xstate/react";
 import React, { createContext, useContext } from "react";
-import { machine } from "../machine";
+import { machine } from "../state/machine";
 import { StateMachine } from "xstate";
 
 export const GlobalContext = createContext<{

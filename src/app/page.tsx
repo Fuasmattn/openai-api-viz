@@ -7,7 +7,7 @@ import { Prompt } from "../components/prompt/Prompt";
 import { useActor } from "@xstate/react";
 import { useMachineService } from "../context/GlobalContext";
 import { ActorRefFrom } from "xstate";
-import { EventTypes, machine } from "../machine";
+import { EventTypes, machine } from "../state/machine";
 
 export default function Landing() {
   const [state, send] = useActor(

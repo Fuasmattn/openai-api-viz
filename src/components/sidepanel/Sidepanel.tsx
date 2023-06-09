@@ -6,7 +6,7 @@ import { AudioRecorder } from "../audiorecorder/AudioRecorder";
 import { useActor } from "@xstate/react";
 import { useMachineService } from "../../context/GlobalContext";
 import { ActorRefFrom } from "xstate";
-import { machine } from "../../machine";
+import { machine } from "../../state/machine";
 
 const Sidepanel = () => {
   const [state, send] = useActor(useMachineService().service as ActorRefFrom<typeof machine>);

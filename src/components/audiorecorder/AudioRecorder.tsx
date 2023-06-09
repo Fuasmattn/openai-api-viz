@@ -3,7 +3,7 @@ import { useProcessVisualization } from "../../context/ProcessVisualizationConte
 import { useActor } from "@xstate/react";
 import { useMachineService } from "../../context/GlobalContext";
 import { ActorRefFrom } from "xstate";
-import { EventTypes, machine } from "../../machine";
+import { EventTypes, machine } from "../../state/machine";
 
 export const AudioRecorder = ({ className }: { className?: string }) => {
   const { setStartRecording, setAudioClip, audioClip } =
