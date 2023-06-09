@@ -6,8 +6,7 @@ import { useMachineService } from "../../context/GlobalContext";
 import { StateEventTypes, machine } from "../../state/machine";
 
 export const AudioRecorder = ({ className }: { className?: string }) => {
-  const { setStartRecording, setAudioClip, audioClip } =
-    useProcessVisualization();
+  const { setAudioClip, audioClip } = useProcessVisualization();
 
   const [state, send] = useActor(
     useMachineService().service as ActorRefFrom<typeof machine>

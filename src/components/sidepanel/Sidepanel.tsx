@@ -18,7 +18,6 @@ const Sidepanel = () => {
 
   const [showInspect, setShowInspect] = useState(false);
   const [useStately, setUseStately] = useState(false);
-  const [events, setEvents] = useState<string[]>([]);
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
