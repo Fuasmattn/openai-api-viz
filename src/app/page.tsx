@@ -14,7 +14,7 @@ export default function Landing() {
   );
 
   const isLoading =
-    state.matches("imageGenerationLoading") || state.matches("fetchImage");
+    state.matches("imageGenerationRequested") || state.matches("fetchImage");
   const isRecording = state.matches("recording");
   const { url, prompt } = state.context;
 

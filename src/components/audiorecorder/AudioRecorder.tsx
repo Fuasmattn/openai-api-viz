@@ -9,7 +9,9 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
   const { setStartRecording, setAudioClip, audioClip } =
     useProcessVisualization();
 
-    const [state, send] = useActor(useMachineService().service as ActorRefFrom<typeof machine>);
+  const [state, send] = useActor(
+    useMachineService().service as ActorRefFrom<typeof machine>
+  );
 
   const startRecording = state.matches("recording");
   const isRecording = state.matches("recording");
@@ -25,7 +27,7 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
     const blob = new Blob(chunks, { type: "audio/mp3; codecs=opus" });
     chunks = [];
     setAudioClip(window.URL.createObjectURL(blob));
-
+    console.log("asd");
     send({ type: StateEventTypes.STOP_RECORDING, params: { blob } });
   };
 
@@ -88,7 +90,7 @@ export const AudioRecorder = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <div>
+    <div className={className}>
       <div className="flex items-center justify-center gap-4">
         {isRecording && (
           <button

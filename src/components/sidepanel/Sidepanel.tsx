@@ -18,6 +18,7 @@ const Sidepanel = () => {
 
   const [showInspect, setShowInspect] = useState(false);
   const [useStately, setUseStately] = useState(false);
+  const [events, setEvents] = useState<string[]>([]);
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -36,8 +37,24 @@ const Sidepanel = () => {
         <p className="text-slate-50 text-2xl mb-6">Behind the Scenes</p>
         {/* @ts-ignore */}
         <p className="text-slate-50 text-base">Current state: {state.value}</p>
-        <p className="text-slate-50">{state.context.message}</p>
-        <AudioRecorder />
+        <p className="text-slate-50">Message: {state.context.message}</p>
+        <p className="text-slate-50">Event: {state.event.type}</p>
+
+        {/* <div className="mt-6 grid grid-cols-3 grid-rows-3 gap-2">
+          {Object.keys(state.configuration[0].machine.states).map((s) => {
+            const active = s === state.value;
+            return (
+              <div
+                key={s}
+                className={`p-4 font-bold rounded ${active ? "bg-darkblue-900 text-white" : "bg-slate-700 text-slate-500"}`}
+              >
+                {s}
+              </div>
+            );
+          })}
+        </div> */}
+
+        <AudioRecorder className="my-6" />
       </div>
       <div className="mt-6 h-full">
         <iframe
