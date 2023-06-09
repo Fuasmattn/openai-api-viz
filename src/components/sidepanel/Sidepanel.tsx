@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AudioRecorder } from "../audiorecorder/AudioRecorder";
 import { useActor } from "@xstate/react";
 import { useMachineService } from "../../context/GlobalContext";
+import { ActorRefFrom } from "xstate";
+import { machine } from "../../machine";
 
 const Sidepanel = () => {
-  const [state, send] = useActor(useMachineService().service);
+  const [state, send] = useActor(useMachineService().service as ActorRefFrom<typeof machine>);
 
   return (
     <div className="bg-gradient-to-r dark:from-slate-900 dark:to-slate-800 from-slate-800 to-slate-800 h-full py-16 px-24 z-10 w-full max-w-5xlfont-mono text-sm">

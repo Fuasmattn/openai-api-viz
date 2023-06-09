@@ -6,9 +6,13 @@ import { motion } from "framer-motion";
 import { Prompt } from "../components/prompt/Prompt";
 import { useActor } from "@xstate/react";
 import { useMachineService } from "../context/GlobalContext";
+import { ActorRefFrom } from "xstate";
+import { EventTypes, machine } from "../machine";
 
 export default function Landing() {
-  const [state, send] = useActor(useMachineService().service);
+  const [state, send] = useActor(
+    useMachineService().service as ActorRefFrom<typeof machine>
+  );
 
   const isLoading = state.matches("imageGenerationLoading");
   const isRecording = state.matches("recording");
@@ -18,15 +22,15 @@ export default function Landing() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    send({ type: "SUBMIT" });
+    send({ type: EventTypes.SUBMIT });
   };
 
   const onChange = (value: string) => {
-    send({ type: "UPDATE_PROMPT", params: { prompt: value } });
+    send({ type: EventTypes.UPDATE_PROMPT, params: { prompt: value } });
   };
 
   const onClickRecordStart = () => {
-    send({ type: "START_RECORDING" });
+    send({ type: EventTypes.START_RECORDING });
   };
 
   return (
