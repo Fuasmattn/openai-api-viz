@@ -4,12 +4,12 @@ import { StateEvents, StateContext } from "./machine";
 export const actions = {
   initialize: assign<StateContext, StateEvents>({
     message: "",
-    prompt: (StateContext, event) =>
-      event.params ? event.params.prompt : StateContext.prompt,
+    prompt: (context, event) =>
+      event.params ? event.params.prompt : context.prompt,
   }),
   startImageGenerationLoading: assign<StateContext, StateEvents>({
-    prompt: (StateContext, event) =>
-      event.params ? event.params.prompt : StateContext.prompt,
+    prompt: (context, event) =>
+      event.params ? event.params.prompt : context.prompt,
     message: "requesting image generation",
   }),
   handleImageGenerationSuccess: assign<StateContext, StateEvents>({
@@ -17,6 +17,35 @@ export const actions = {
     error: null,
     message: "image generation successful",
   }),
+  handleImageGenerationFailure: assign<StateContext, StateEvents>({
+    url: "",
+    error: (_, event) => event.data.error,
+    message: "image generation failed",
+  }),
+
+  startChatCompletionLoading: assign<StateContext, StateEvents>({
+    chat: (context, event) =>
+      context.chat.concat({
+        text: event.params ? event.params.prompt : context.prompt,
+        source: "client",
+        timestamp: new Date(),
+      }),
+    prompt: (context, event) =>
+      event.params ? event.params.prompt : context.prompt,
+
+    message: "requesting chat response",
+  }),
+  handleChatCompletionSuccess: assign<StateContext, StateEvents>({
+    chat: (context: StateContext, event: StateEvents) =>
+      context.chat.concat({ text: event.data.text, timestamp: new Date() }),
+    error: null,
+    message: "chat response successful",
+  }),
+  handleChatCompletionFailure: assign<StateContext, StateEvents>({
+    error: (_, event) => event.data.error,
+    message: "chat response failed",
+  }),
+
   handleFetchImage: assign<StateContext, StateEvents>({
     message: "fetching image",
   }),
@@ -28,15 +57,11 @@ export const actions = {
     error: "failed to retrieve image from url",
     message: "image fetching failed",
   }),
-  handleImageGenerationFailure: assign<StateContext, StateEvents>({
-    url: "",
-    error: (_, event) => event.data.error,
-    message: "image generation failed",
-  }),
   handleRecording: assign<StateContext, StateEvents>({
     message: "start recording",
   }),
   startTranscriptionLoading: assign<StateContext, StateEvents>({
+    isChat: (_, event) => event.params.isChat ?? false,
     message: "requesting transcription",
   }),
   handleTranscriptionSuccess: assign<StateContext, StateEvents>({

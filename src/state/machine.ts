@@ -8,13 +8,24 @@ export enum StateEventTypes {
   SUBMIT = "SUBMIT",
   START_RECORDING = "START_RECORDING",
   STOP_RECORDING = "STOP_RECORDING",
+  SUBMIT_COMPLETION = "SUBMIT_COMPLETION",
   FETCH_IMAGE_SUCCESS = "FETCH_IMAGE_SUCCESS",
   FETCH_IMAGE_FAILURE = "FETCH_IMAGE_FAILURE",
+}
+
+type ChatMessageSource = "client";
+
+export interface ChatMessage {
+  text: string;
+  source?: ChatMessageSource;
+  timestamp: Date;
 }
 
 export interface StateContext {
   url: string;
   prompt: string;
+  chat: ChatMessage[];
+  isChat: boolean;
   message: string;
   error: string | null;
   urlList: PromptHistoryItem[];
@@ -24,6 +35,8 @@ const initialContext: StateContext = {
   url: "/cyberpunk.jpg",
   prompt: "",
   message: "",
+  isChat: false,
+  chat: [],
   error: null,
   urlList: [
     {
@@ -35,8 +48,11 @@ const initialContext: StateContext = {
 
 // TODO: improve types
 export type StateEvents =
+  | { type: "" }
+  | { type: ""; params?: any; data?: any }
   | { type: StateEventTypes.SUBMIT; params?: any; data?: any }
   | { type: StateEventTypes.UPDATE_PROMPT; params?: any; data?: any }
+  | { type: StateEventTypes.SUBMIT_COMPLETION; params?: any; data?: any }
   | { type: StateEventTypes.START_RECORDING; params?: any; data?: any }
   | { type: StateEventTypes.STOP_RECORDING; params?: any; data?: any }
   | { type: StateEventTypes.FETCH_IMAGE_SUCCESS; params?: any; data?: any }
@@ -65,6 +81,7 @@ export const machine = createMachine(
             target: "imageGenerationLoading",
           },
           START_RECORDING: { target: "recording" },
+          SUBMIT_COMPLETION: { target: "chatCompletionLoading" },
         },
       },
 
@@ -91,6 +108,31 @@ export const machine = createMachine(
 
       imageGenerationFailure: {
         entry: "handleImageGenerationFailure",
+        always: "idle",
+      },
+
+      chatCompletionLoading: {
+        entry: "startChatCompletionLoading",
+
+        invoke: {
+          src: "completion",
+          onDone: {
+            target: "chatCompletionSuccess",
+          },
+          onError: {
+            target: "chatCompletionFailure",
+            actions: "handleChatCompletionFailure",
+          },
+        },
+      },
+
+      chatCompletionSuccess: {
+        entry: "handleChatCompletionSuccess",
+        always: "idle",
+      },
+
+      chatCompletionFailure: {
+        entry: "handleChatCompletionFailure",
         always: "idle",
       },
 
@@ -121,13 +163,27 @@ export const machine = createMachine(
           },
         },
       },
-
+      transcriptionSuccess: {
+        always: [
+          {
+            cond: (context: StateContext, event: StateEvents) => context.isChat,
+            target: "chatCompletionLoading",
+          },
+          {
+            target: "imageGenerationLoading",
+          },
+        ],
+      },
+      transcriptionFailure: {
+        entry: "handleTranscriptionFailure",
+        always: "idle",
+      },
       transcriptionLoading: {
         entry: "startTranscriptionLoading",
         invoke: {
           src: "transcribeRecording",
           onDone: {
-            target: "imageGenerationLoading",
+            target: "transcriptionSuccess",
             actions: "handleTranscriptionSuccess",
           },
           onError: {
@@ -135,11 +191,6 @@ export const machine = createMachine(
             actions: "handleTranscriptionFailure",
           },
         },
-      },
-
-      transcriptionFailure: {
-        entry: "handleTranscriptionFailure",
-        always: "idle",
       },
     },
   },

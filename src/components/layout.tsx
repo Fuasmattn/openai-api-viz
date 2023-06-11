@@ -4,7 +4,6 @@ import { MwAppBar, MwAppBarTitle, MwIcon } from "@maibornwolff/mwui-react";
 import Sidepanel from "./sidepanel/Sidepanel";
 
 import "allotment/dist/style.css";
-import "../globals.css";
 import "@maibornwolff/mwui-stencil/dist/mwui-stencil/mwui-stencil.css";
 import { GlobalContextProvider } from "../context/GlobalContext";
 import { ProcessVisualizationContextProvider } from "../context/ProcessVisualizationContext";
@@ -81,7 +80,7 @@ export default function RootLayout({
               {children}
             </Allotment.Pane>
             <Allotment.Pane
-              preferredSize="60%"
+              preferredSize="1%"
               minSize={20}
               className="h-full w-full"
             >

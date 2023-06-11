@@ -31,4 +31,20 @@ export const services = {
         throw error;
       });
   },
+  completion: (context: StateContext, event: any) => {
+    console.log("service chatCompletion", event, context);
+    const prompt = event.params ? event.params.prompt : context.prompt;
+    return fetch("/api/completion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    })
+      .then((res) => res.json())
+      .then((data) => data)
+      .catch((error) => {
+        throw error;
+      });
+  },
 };
