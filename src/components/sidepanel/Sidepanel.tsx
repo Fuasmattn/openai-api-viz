@@ -52,8 +52,6 @@ const Sidepanel = () => {
             );
           })}
         </div> */}
-
-        <AudioRecorder className="my-6" />
       </div>
       <div className="mt-6 h-full">
         <iframe

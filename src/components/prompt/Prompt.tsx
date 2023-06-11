@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 
 interface Props {
   value: string;
+  placeholder?: string;
+  submitLabel: string;
   isRecording: boolean;
   isLoading: boolean;
   onChange: (val: string) => void;
@@ -15,6 +17,8 @@ export const Prompt = ({
   handleSubmit,
   isRecording,
   isLoading,
+  placeholder,
+  submitLabel,
   onStartRecording,
 }: Props) => {
   return (
@@ -27,7 +31,7 @@ export const Prompt = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="h-14 pl-4 pr-24 bg-white shadow-xl transition-shadow focus:shadow-none focus:border-2 border-0 border-gray-900 text-gray-900 text-md rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
-          placeholder="Cyberpunk city at night, cinematic"
+          placeholder={placeholder}
           required
           data-1p-ignore
         />
@@ -81,7 +85,7 @@ export const Prompt = ({
         disabled={isLoading || isRecording}
         className="font-sans px-8 py-3 rounded-full font-bold text-white text-xl bg-pink-500 hover:bg-pink-600 active:bg-pink-700 focus:bg-pink-600 disabled:bg-neutral-400 active:text-neutral-100"
         type="submit"
-        value="Create"
+        value={submitLabel}
       ></input>
     </form>
   );
