@@ -30,7 +30,7 @@ export const actions = {
         source: "client",
         timestamp: new Date(),
       }),
-    prompt: (context, event) =>
+    chatPrompt: (context, event) =>
       event.params ? event.params.prompt : context.prompt,
 
     message: "requesting chat response",
@@ -61,6 +61,7 @@ export const actions = {
     message: "start recording",
   }),
   startTranscriptionLoading: assign<StateContext, StateEvents>({
+    prompt: (_, event) => event.params.prompt,
     isChat: (_, event) => event.params.isChat ?? false,
     message: "requesting transcription",
   }),

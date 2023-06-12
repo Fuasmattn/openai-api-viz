@@ -55,7 +55,7 @@ const TalkPage = () => {
           ref={bottomRef}
           className="h-full mb-10 no-scrollbar overflow-auto rounded-xl px-8 bg-gradient-to-b from-transparent via-transparent to-white dark:to-slate-800"
         >
-          <div className="flex flex-col justify-end pb-8 text-slate-950 dark:text-white">
+          <div className="flex min-h-full flex-col justify-end pb-8 text-slate-950 dark:text-white">
             {messages.map((message: Message, index) => (
               <motion.div
                 key={`message-${index}`}
@@ -86,6 +86,7 @@ const TalkPage = () => {
           transition={{ delay: 0.2 }}
         >
           <Prompt
+            key="chat-prompt"
             value={value}
             isLoading={isLoading}
             placeholder="Ask me anything"

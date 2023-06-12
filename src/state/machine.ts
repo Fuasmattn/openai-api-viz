@@ -24,6 +24,7 @@ export interface ChatMessage {
 export interface StateContext {
   url: string;
   prompt: string;
+  chatPrompt: string;
   chat: ChatMessage[];
   isChat: boolean;
   message: string;
@@ -34,6 +35,7 @@ export interface StateContext {
 const initialContext: StateContext = {
   url: "/cyberpunk.jpg",
   prompt: "",
+  chatPrompt: "",
   message: "",
   isChat: false,
   chat: [],

@@ -33,7 +33,7 @@ export const services = {
   },
   completion: (context: StateContext, event: any) => {
     console.log("service chatCompletion", event, context);
-    const prompt = event.params ? event.params.prompt : context.prompt;
+    const prompt = event.params ? event.params.prompt : context.chatPrompt;
     return fetch("/api/completion", {
       method: "POST",
       headers: {

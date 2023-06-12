@@ -7,13 +7,15 @@ import Image from "next/image";
 import { Prompt } from "../components/prompt/Prompt";
 import { useMachineService } from "../context/GlobalContext";
 import { StateEventTypes, machine } from "../state/machine";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import AudioRecorderDialog from "../components/audiorecorder/AudioRecorderDialog";
 
 export default function Landing() {
   const [state, send] = useActor(
     useMachineService().service as ActorRefFrom<typeof machine>
   );
+
+  const [value, setValue] = useState("");
 
   const isLoading =
     state.matches("imageGenerationLoading") || state.matches("fetchImage");
@@ -22,13 +24,18 @@ export default function Landing() {
 
   // const thumbs = urlList.length === 1 ? [] : urlList;
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: any, value: string) => {
     event.preventDefault();
-    send({ type: StateEventTypes.SUBMIT });
+    // send({ type: StateEventTypes.UPDATE_PROMPT, params: { prompt: value } });
+    send({ type: StateEventTypes.SUBMIT, params: { prompt: value } });
   };
 
-  const onChange = (value: string) => {
-    send({ type: StateEventTypes.UPDATE_PROMPT, params: { prompt: value } });
+  useEffect(() => {
+    setValue(prompt);
+  }, [prompt]);
+
+  const onChange = (v: string) => {
+    setValue(v);
   };
 
   const onClickRecordStart = () => {
@@ -36,7 +43,10 @@ export default function Landing() {
   };
 
   const onClickRecordStop = (blob: Blob) => {
-    send({ type: StateEventTypes.STOP_RECORDING, params: { blob } });
+    send({
+      type: StateEventTypes.STOP_RECORDING,
+      params: { blob, prompt: value },
+    });
   };
 
   const onLoadingComplete = () => {
@@ -72,10 +82,10 @@ export default function Landing() {
             <Prompt
               isLoading={isLoading}
               isRecording={isRecording}
-              value={prompt}
+              value={value}
               placeholder={urlList[0].prompt}
               onChange={onChange}
-              handleSubmit={handleSubmit}
+              handleSubmit={(e) => handleSubmit(e, value)}
               submitLabel="Create"
               onStartRecording={onClickRecordStart}
             />
