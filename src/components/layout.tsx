@@ -43,6 +43,14 @@ export default function RootLayout({
                     </Link>
                     <Link
                       className={`font-bold hover:underline ${
+                        router.pathname == "/chat" ? "text-pink-500" : ""
+                      }`}
+                      href="/chat"
+                    >
+                      Chat
+                    </Link>
+                    <Link
+                      className={`font-bold hover:underline ${
                         router.pathname == "/talk" ? "text-pink-500" : ""
                       }`}
                       href="/talk"

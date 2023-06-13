@@ -1,13 +1,14 @@
 "use client";
 
 import { useActor } from "@xstate/react";
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { ActorRefFrom } from "xstate";
 import { motion } from "framer-motion";
 import { useMachineService } from "../context/GlobalContext";
-import { Prompt } from "../components/prompt/Prompt";
 import { ChatMessage, StateEventTypes, machine } from "../state/machine";
 import AudioRecorderDialog from "../components/audiorecorder/AudioRecorderDialog";
+import TypingIndicator from "../components/TypingIndicator";
+import { useProcessVisualization } from "../context/ProcessVisualizationContext";
 
 interface Message extends ChatMessage {
   pending?: boolean;
@@ -17,12 +18,12 @@ const TalkPage = () => {
   const [state, send] = useActor(
     useMachineService().service as ActorRefFrom<typeof machine>
   );
-  const bottomRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
-  const [clientMessages, setClientMessages] = useState<Message[]>([]);
+  const [audioResponse, setAudioResponse] = useState<string>();
+  const { audioClip } = useProcessVisualization();
 
   const isRecording = state.matches("recording");
-  const isLoading = false;
+  const isLoading = state.matches("chatCompletionLoading");
 
   const onClickRecordStop = (blob: Blob) => {
     send({
@@ -33,91 +34,68 @@ const TalkPage = () => {
 
   const messages = state.context.chat;
 
-  useLayoutEffect(() => {
-    bottomRef.current?.scrollBy(0, bottomRef.current.scrollHeight);
-  }, [messages]);
-
   return (
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="dark:bg-slate-900 bg-slate-100 min-h-screen pb-16 flex justify-center"
+      className=" flex flex-row justify-center items-center dark:bg-slate-900 bg-slate-100 min-h-screen pb-16"
     >
       <AudioRecorderDialog
         isRecording={isRecording}
         onStop={onClickRecordStop}
       />
-      <motion.div className="h-full relative pb-80 px-10 w-full max-w-4xl">
-        <motion.div
-          initial={{ height: 0 }}
-          animate={{ height: "100%" }}
-          transition={{ duration: 0.5 }}
-          ref={bottomRef}
-          className="h-full mb-10 no-scrollbar overflow-auto rounded-xl px-8 bg-gradient-to-b from-transparent via-transparent to-white dark:to-slate-800"
-        >
-          <div className="flex min-h-full flex-col justify-end pb-8 text-slate-950 dark:text-white">
-            {messages.map((message: Message, index) => (
-              <motion.div
-                key={`message-${index}`}
-                className="flex flex-col my-1"
-                initial={{ opacity: 0, translateY: 20 }}
-                animate={{ opacity: 1, translateY: 0 }}
-              >
-                <motion.p
-                  className={`p-4 shadow w-fit rounded-xl ${
-                    message.source === "client"
-                      ? "self-end bg-pink-500 text-white"
-                      : "bg-white text-slate-950"
-                  }`}
-                >
-                  {message.pending ? (
-                    <span className="w-10 h-2"></span>
-                  ) : (
-                    message.text
-                  )}
-                </motion.p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, translateY: 20 }}
-          animate={{ opacity: 1, translateY: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Prompt
-            key="chat-prompt"
-            value={value}
-            isLoading={isLoading}
-            placeholder="Ask me anything"
-            isRecording={isRecording}
-            submitLabel="Send"
-            onStartRecording={() => {
+      <motion.div className="relative px-10 max-w-4xl">
+        {isLoading && <TypingIndicator />}
+        <div>
+          <button
+            className="rounded-full p-4 flex justify-center text-slate-50 bg-pink-500"
+            onClick={() => {
               send({
                 type: StateEventTypes.START_RECORDING,
                 params: { chat: true },
               });
             }}
-            onChange={(v) => {
-              setValue(v);
+          >
+            <svg
+              className="w-8"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M7 4a3 3 0 016 0v6a3 3 0 11-6 0V4z"></path>
+              <path d="M5.5 9.643a.75.75 0 00-1.5 0V10c0 3.06 2.29 5.585 5.25 5.954V17.5h-1.5a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-1.5v-1.546A6.001 6.001 0 0016 10v-.357a.75.75 0 00-1.5 0V10a4.5 4.5 0 01-9 0v-.357z"></path>
+            </svg>
+          </button>
+          <div className="mt-10">
+            input: {audioClip && <audio src={audioClip} controls></audio>}
+          </div>
+          <div className="mt-10">
+            output/response: {state.context.chat[1]?.text}
+          </div>
+          <button
+            onClick={async () => {
+              let utterance = new SpeechSynthesisUtterance(messages[1]?.text);
+              let voicesArray = speechSynthesis.getVoices();
+              utterance.voice = voicesArray[2];
+              speechSynthesis.speak(utterance);
+              // const response = await fetch("/api/speech", {
+              //   method: "POST",
+              //   body: JSON.stringify({ text: "hello there!" }),
+              // });
+              // const data = await response.json();
+              // console.log(data);
+              // console.log("data", data);
+
+              // const blob = await data.blob();
+              // setAudioResponse(window.URL.createObjectURL(blob));
+              // console.log(blob);
             }}
-            handleSubmit={(e) => {
-              e.preventDefault();
-              setClientMessages((msg) =>
-                msg.concat({
-                  text: value,
-                  source: "client",
-                  timestamp: new Date(),
-                })
-              );
-              send({
-                type: StateEventTypes.SUBMIT_COMPLETION,
-                params: { prompt: value },
-              });
-              setValue("");
-            }}
-          ></Prompt>
-        </motion.div>
+          >
+            -> to speech pls
+          </button>
+          {audioResponse && <audio src={audioResponse} controls></audio>}
+        </div>
       </motion.div>
     </motion.main>
   );
