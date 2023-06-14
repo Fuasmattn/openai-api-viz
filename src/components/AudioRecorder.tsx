@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useActor } from "@xstate/react";
 import { ActorRefFrom } from "xstate";
 import { motion } from "framer-motion";
-import { useProcessVisualization } from "../../context/ProcessVisualizationContext";
-import { useMachineService } from "../../context/GlobalContext";
-import { machine } from "../../state/machine";
+import { useProcessVisualization } from "../context/ProcessVisualizationContext";
+import { useMachineService } from "../context/GlobalContext";
+import { machine } from "../state/machine";
 
 export const AudioRecorder = ({
   className,

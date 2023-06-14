@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { ActorRefFrom } from "xstate";
 import { useActor } from "@xstate/react";
 import { inspect } from "@xstate/inspect";
-import { AudioRecorder } from "../audiorecorder/AudioRecorder";
-import { useMachineService } from "../../context/GlobalContext";
-import { machine } from "../../state/machine";
+import { AudioRecorder } from "./AudioRecorder";
+import { useMachineService } from "../context/GlobalContext";
+import { machine } from "../state/machine";
 
 const statecharts = "https://statecharts.io/inspect";
 const stately = "https://stately.ai/viz?inspect";

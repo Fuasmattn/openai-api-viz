@@ -4,11 +4,11 @@ import { useActor } from "@xstate/react";
 import { ActorRefFrom } from "xstate";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Prompt } from "../components/prompt/Prompt";
+import { Prompt } from "../components/Prompt";
 import { useMachineService } from "../context/GlobalContext";
 import { StateEventTypes, machine } from "../state/machine";
 import { Suspense, useEffect, useState } from "react";
-import AudioRecorderDialog from "../components/audiorecorder/AudioRecorderDialog";
+import AudioRecorderDialog from "../components/AudioRecorderDialog";
 
 export default function Landing() {
   const [state, send] = useActor(

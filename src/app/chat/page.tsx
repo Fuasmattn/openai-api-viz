@@ -4,11 +4,11 @@ import { useActor } from "@xstate/react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { ActorRefFrom } from "xstate";
 import { motion } from "framer-motion";
-import { useMachineService } from "../context/GlobalContext";
-import { Prompt } from "../components/prompt/Prompt";
-import { ChatMessage, StateEventTypes, machine } from "../state/machine";
-import AudioRecorderDialog from "../components/audiorecorder/AudioRecorderDialog";
-import TypingIndicator from "../components/TypingIndicator";
+import { useMachineService } from "../../context/GlobalContext";
+import { Prompt } from "../../components/Prompt";
+import { ChatMessage, StateEventTypes, machine } from "../../state/machine";
+import AudioRecorderDialog from "../../components/AudioRecorderDialog";
+import TypingIndicator from "../../components/TypingIndicator";
 
 interface Message extends ChatMessage {
   pending?: boolean;

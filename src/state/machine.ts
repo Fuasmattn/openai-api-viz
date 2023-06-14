@@ -1,5 +1,5 @@
 import { createMachine } from "xstate";
-import { PromptHistoryItem } from "../components/prompt/PromptHistory";
+import { PromptHistoryItem } from "../components/PromptHistory";
 import { actions } from "./actions";
 import { services } from "./services";
 
