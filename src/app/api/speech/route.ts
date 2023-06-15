@@ -1,33 +1,42 @@
+import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+
+const API_KEY = process.env.ELEVENLABS_API_KEY;
+const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; // The ID of the voice you want to get
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
+  const { text } = await req.json();
+
   const options = {
     method: "POST",
     headers: {
-      "X-USER-ID": "qGXRmaQ7GiVJc574dooNLeNpZnf2",
-      AUTHORIZATION: "Bearer 102bf4248fd649d2b237c6ecca03d738",
-      accept: "text/event-stream",
+      accept: "audio/mpeg",
       "content-type": "application/json",
+      "xi-api-key": `${API_KEY}`,
     },
     body: JSON.stringify({
-      quality: "medium",
-      output_format: "mp3",
-      speed: 1,
-      sample_rate: 24000,
-      text: "hello there",
-      voice: "larry",
+      text,
+      model_id: "eleven_multilingual_v1",
+      voice_settings: {
+        stability: 1,
+        similarity_boost: 0.5,
+      },
     }),
   };
 
-  // const a = await fetch("https://play.ht/api/v2/tts", options)
-  //   .then((res) => res.json())
-  //   .then((json) => console.log(json))
-  //   .catch((err) => console.error("error:" + err));
-  return NextResponse.json({});
-};
+  console.log(options);
 
-export const config: PageConfig = {
-  api: {
-    bodyParser: false,
-  },
+  const response = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+    options
+  );
+
+  console.log(response);
+
+  const audioBuffer = await response.arrayBuffer();
+  const filePath = path.resolve(process.cwd(), "public/audio.mp3");
+  await fs.writeFileSync(filePath, Buffer.from(audioBuffer));
+
+  return NextResponse.json({ path: filePath });
 };

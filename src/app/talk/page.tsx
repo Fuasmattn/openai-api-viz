@@ -1,7 +1,7 @@
 "use client";
 
 import { useActor } from "@xstate/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ActorRefFrom } from "xstate";
 import { motion } from "framer-motion";
 import { useMachineService } from "../../context/GlobalContext";
@@ -19,6 +19,7 @@ const TalkPage = () => {
     useMachineService().service as ActorRefFrom<typeof machine>
   );
   const [value, setValue] = useState("");
+  const [elevenLabs, setElevenLabs] = useState(true);
   const [audioResponse, setAudioResponse] = useState<string>();
   const { audioClip } = useProcessVisualization();
 
@@ -33,6 +34,23 @@ const TalkPage = () => {
   };
 
   const messages = state.context.chat;
+
+  const utteranceOutput = () => {
+    let utterance = new SpeechSynthesisUtterance(messages[1]?.text);
+    let voicesArray = speechSynthesis.getVoices();
+    utterance.voice = voicesArray[2];
+    speechSynthesis.speak(utterance);
+  };
+
+  const toSpeech = useCallback(async () => {
+    const input = state.context.chat[1]?.text;
+    if (input) {
+      send({
+        type: StateEventTypes.START_VOICE_SYNTHESIS,
+        params: { prompt: input },
+      });
+    }
+  }, [state.context]);
 
   return (
     <motion.main
@@ -73,28 +91,14 @@ const TalkPage = () => {
           <div className="mt-10">
             output/response: {state.context.chat[1]?.text}
           </div>
-          <button
-            onClick={async () => {
-              let utterance = new SpeechSynthesisUtterance(messages[1]?.text);
-              let voicesArray = speechSynthesis.getVoices();
-              utterance.voice = voicesArray[2];
-              speechSynthesis.speak(utterance);
-              // const response = await fetch("/api/speech", {
-              //   method: "POST",
-              //   body: JSON.stringify({ text: "hello there!" }),
-              // });
-              // const data = await response.json();
-              // console.log(data);
-              // console.log("data", data);
-
-              // const blob = await data.blob();
-              // setAudioResponse(window.URL.createObjectURL(blob));
-              // console.log(blob);
-            }}
-          >
-            -> to speech pls
+          {/* TODO: move to state machine */}
+          <button className="p-4 bg-black text-white" onClick={toSpeech}>
+            📣 to speech pls
           </button>
-          {audioResponse && <audio src={audioResponse} controls></audio>}
+
+          {state.context.voiceAvailable && (
+            <audio src="./audio.mp3" autoPlay controls></audio>
+          )}
         </div>
       </motion.div>
     </motion.main>

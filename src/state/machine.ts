@@ -9,6 +9,7 @@ export enum StateEventTypes {
   START_RECORDING = "START_RECORDING",
   STOP_RECORDING = "STOP_RECORDING",
   SUBMIT_COMPLETION = "SUBMIT_COMPLETION",
+  START_VOICE_SYNTHESIS = "START_VOICE_SYNTHESIS",
   FETCH_IMAGE_SUCCESS = "FETCH_IMAGE_SUCCESS",
   FETCH_IMAGE_FAILURE = "FETCH_IMAGE_FAILURE",
 }
@@ -26,7 +27,11 @@ export interface StateContext {
   prompt: string;
   chatPrompt: string;
   chat: ChatMessage[];
+  // TODO:
   isChat: boolean;
+  toVoice: boolean;
+  voiceAvailable: boolean;
+
   message: string;
   error: string | null;
   urlList: PromptHistoryItem[];
@@ -38,6 +43,8 @@ const initialContext: StateContext = {
   chatPrompt: "",
   message: "",
   isChat: false,
+  toVoice: false,
+  voiceAvailable: false,
   chat: [],
   error: null,
   urlList: [
@@ -55,6 +62,7 @@ export type StateEvents =
   | { type: StateEventTypes.SUBMIT; params?: any; data?: any }
   | { type: StateEventTypes.UPDATE_PROMPT; params?: any; data?: any }
   | { type: StateEventTypes.SUBMIT_COMPLETION; params?: any; data?: any }
+  | { type: StateEventTypes.START_VOICE_SYNTHESIS; params?: any; data?: any }
   | { type: StateEventTypes.START_RECORDING; params?: any; data?: any }
   | { type: StateEventTypes.STOP_RECORDING; params?: any; data?: any }
   | { type: StateEventTypes.FETCH_IMAGE_SUCCESS; params?: any; data?: any }
@@ -83,6 +91,7 @@ export const machine = createMachine(
             target: "imageGenerationLoading",
           },
           START_RECORDING: { target: "recording" },
+          START_VOICE_SYNTHESIS: { target: "voiceSynthesisLoading" },
           SUBMIT_COMPLETION: { target: "chatCompletionLoading" },
         },
       },
@@ -172,6 +181,11 @@ export const machine = createMachine(
             target: "chatCompletionLoading",
           },
           {
+            cond: (context: StateContext, event: StateEvents) =>
+              !context.isChat && context.toVoice,
+            target: "voiceSynthesisLoading",
+          },
+          {
             target: "imageGenerationLoading",
           },
         ],
@@ -193,6 +207,31 @@ export const machine = createMachine(
             actions: "handleTranscriptionFailure",
           },
         },
+      },
+
+      voiceSynthesisLoading: {
+        entry: "startVoiceSynthesisLoading",
+        invoke: {
+          src: "voiceSynthesis",
+          onDone: {
+            target: "voiceSynthesisSuccess",
+            actions: "handleVoiceSynthesisSuccess",
+          },
+          onError: {
+            target: "voiceSynthesisFailure",
+            actions: "handleVoiceSynthesisFailure",
+          },
+        },
+      },
+
+      voiceSynthesisFailure: {
+        entry: "handleVoiceSynthesisFailure",
+        always: "idle",
+      },
+
+      voiceSynthesisSuccess: {
+        entry: "handleVoiceSynthesisSuccess",
+        always: "idle",
       },
     },
   },

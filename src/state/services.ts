@@ -47,4 +47,21 @@ export const services = {
         throw error;
       });
   },
+  voiceSynthesis: (context: StateContext, event: any) => {
+    console.log("service voiceSynthesis", event, context);
+    const input = event.params.prompt;
+    return fetch("/api/speech", {
+      method: "POST",
+      headers: {
+        accept: "audio/mpeg",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ text: input }),
+    })
+      .then((res) => res.json())
+      .then((data) => data)
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

@@ -73,4 +73,22 @@ export const actions = {
     prompt: "",
     message: "transcription failure",
   }),
+
+  startVoiceSynthesisLoading: assign<StateContext, StateEvents>({
+    prompt: (_, event) => event.params.prompt,
+    isChat: false,
+    toVoice: true,
+    voiceAvailable: false,
+    message: "voice synthesis loading",
+  }),
+  handleVoiceSynthesisSuccess: assign<StateContext, StateEvents>({
+    toVoice: false,
+    voiceAvailable: true,
+    message: "voice synthesis successful",
+  }),
+  handleVoiceSynthesisFailure: assign<StateContext, StateEvents>({
+    toVoice: false,
+    voiceAvailable: false,
+    message: "voice synthesis failure",
+  }),
 } as any;
