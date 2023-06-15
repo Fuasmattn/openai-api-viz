@@ -1,26 +1,26 @@
 /* eslint-disable import/no-anonymous-default-export */
-import multer, { diskStorage } from "multer";
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import fs from "fs";
-import { OpenAIApi } from "openai";
-import { configuration } from "../../../config/openai";
-import { NextRequest, NextResponse } from "next/server";
-import { Readable } from "stream";
+import multer, { diskStorage } from 'multer';
+import type { NextApiRequest, NextApiResponse, PageConfig } from 'next';
+import fs, { createWriteStream, writeFile, writeFileSync } from 'fs';
+import { OpenAIApi } from 'openai';
+import { configuration } from '../../../config/openai';
+import { NextRequest, NextResponse } from 'next/server';
+import { Readable } from 'stream';
 
 const openai = new OpenAIApi(configuration);
 
 const upload = multer({
   storage: diskStorage({
     destination: function (req, file, callback) {
-      callback(null, "./uploads");
+      callback(null, './uploads');
     },
     filename: function (req, file, callback) {
-      callback(null, file.fieldname + ".mp3");
+      callback(null, file.fieldname + '.mp3');
     },
   }),
 });
 
-const middleware = upload.single("audio");
+const middleware = upload.single('audio');
 
 // const fn = async (req: any, res: any) => {
 //   const temp = await req.formData();
@@ -36,22 +36,12 @@ const middleware = upload.single("audio");
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   const temp = await req.formData();
-  const file = temp.get("audio");
+  const file = temp.get('audio');
 
-  class RS extends Readable {
-    count = 0;
-    _read() {
-      if (this.count === 0) {
-        this.push(file);
-      } else {
-        this.push(null);
-      }
-    }
-  }
-
-  const response = await openai.createTranscription(
-    new RS() as any,
-    "whisper-1"
+  const response = openai.createTranscription(
+    Readable.fromWeb((file as any).stream()) as any as File,
+    'whisper-1'
   );
-  return NextResponse.json({ text: response.data.text });
+
+  return NextResponse.json({ text: (await response).data.text });
 };
