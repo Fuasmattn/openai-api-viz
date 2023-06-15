@@ -1,7 +1,6 @@
-/* eslint-disable import/no-anonymous-default-export */
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export const POST = async (req: NextRequest): Promise<NextResponse> => {
   const options = {
     method: "POST",
     headers: {
@@ -24,9 +23,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   //   .then((res) => res.json())
   //   .then((json) => console.log(json))
   //   .catch((err) => console.error("error:" + err));
-
-
-}
+  return NextResponse.json({});
+};
 
 export const config: PageConfig = {
   api: {
