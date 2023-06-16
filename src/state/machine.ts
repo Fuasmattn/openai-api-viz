@@ -57,7 +57,7 @@ const initialContext: StateContext = {
 
 // TODO: improve types
 export type StateEvents =
-  | { type: "" }
+  // | { type: "" }
   | { type: ""; params?: any; data?: any }
   | { type: StateEventTypes.SUBMIT; params?: any; data?: any }
   | { type: StateEventTypes.UPDATE_PROMPT; params?: any; data?: any }

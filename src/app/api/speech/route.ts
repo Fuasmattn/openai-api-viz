@@ -25,14 +25,10 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
     }),
   };
 
-  console.log(options);
-
   const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
     options
   );
-
-  console.log(response);
 
   const audioBuffer = await response.arrayBuffer();
   const filePath = path.resolve(process.cwd(), "public/audio.mp3");
