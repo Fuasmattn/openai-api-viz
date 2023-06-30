@@ -22,11 +22,8 @@ export default function Landing() {
   const isRecording = state.matches("recording");
   const { url, prompt, urlList } = state.context;
 
-  // const thumbs = urlList.length === 1 ? [] : urlList;
-
   const handleSubmit = (event: any, value: string) => {
     event.preventDefault();
-    // send({ type: StateEventTypes.UPDATE_PROMPT, params: { prompt: value } });
     send({ type: StateEventTypes.SUBMIT, params: { prompt: value } });
   };
 
@@ -58,7 +55,7 @@ export default function Landing() {
   };
 
   return (
-    <main className="dark:bg-slate-900 bg-slate-100 min-h-screen py-16 flex justify-center">
+    <main className="dark:bg-slate-900 bg-slate-100 w-full min-h-screen py-16 flex justify-center">
       <div className="px-10 w-4/5 max-w-3xl">
         <Suspense>
           <AudioRecorderDialog

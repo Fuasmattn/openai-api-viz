@@ -27,10 +27,10 @@ export interface StateContext {
   prompt: string;
   chatPrompt: string;
   chat: ChatMessage[];
-  // TODO:
   isChat: boolean;
   toVoice: boolean;
   voiceAvailable: boolean;
+  tokens: number;
 
   message: string;
   error: string | null;
@@ -41,10 +41,11 @@ const initialContext: StateContext = {
   url: "/cyberpunk.jpg",
   prompt: "",
   chatPrompt: "",
-  message: "",
+  message: "Waiting for Action",
   isChat: false,
   toVoice: false,
   voiceAvailable: false,
+  tokens: 0,
   chat: [],
   error: null,
   urlList: [

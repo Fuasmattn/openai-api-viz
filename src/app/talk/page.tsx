@@ -88,7 +88,10 @@ const TalkPage = () => {
           <div className="mt-10">
             input: {audioClip && <audio src={audioClip} controls></audio>}
           </div>
-          <div className="mt-10">
+          <div className="mt-10 text-white">
+            transcription: {state.context.chat[0]?.text}
+          </div>
+          <div className="mt-10 text-white">
             output/response: {state.context.chat[1]?.text}
           </div>
           {/* TODO: move to state machine */}

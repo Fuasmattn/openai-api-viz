@@ -3,13 +3,14 @@ import { StateEvents, StateContext } from "./machine";
 
 export const actions = {
   initialize: assign<StateContext, StateEvents>({
-    message: "",
+    message: "Waiting for Action",
     prompt: (context, event) =>
       event.params ? event.params.prompt : context.prompt,
   }),
   startImageGenerationLoading: assign<StateContext, StateEvents>({
     prompt: (context, event) =>
       event.params ? event.params.prompt : context.prompt,
+    tokens: (context) => context.tokens + 2,
     message: "requesting image generation",
   }),
   handleImageGenerationSuccess: assign<StateContext, StateEvents>({
@@ -24,6 +25,7 @@ export const actions = {
   }),
 
   startChatCompletionLoading: assign<StateContext, StateEvents>({
+    tokens: (context) => context.tokens + 2,
     chat: (context, event) =>
       context.chat.concat({
         text: event.params ? event.params.prompt : context.prompt,
@@ -36,6 +38,7 @@ export const actions = {
     message: "requesting chat response",
   }),
   handleChatCompletionSuccess: assign<StateContext, StateEvents>({
+    tokens: (context) => context.tokens + 3,
     chat: (context: StateContext, event: StateEvents) =>
       context.chat.concat({ text: event.data.text, timestamp: new Date() }),
     error: null,
@@ -51,7 +54,7 @@ export const actions = {
   }),
   handleFetchImageSuccess: assign<StateContext, StateEvents>({
     error: null,
-    message: "image fetching succesful",
+    message: "image fetching successful",
   }),
   handleFetchImageFailure: assign<StateContext, StateEvents>({
     error: "failed to retrieve image from url",

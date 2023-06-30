@@ -47,37 +47,38 @@ const ChatPage = () => {
         isRecording={isRecording}
         onStop={onClickRecordStop}
       />
-      <motion.div className="h-full relative pb-80 px-10 w-full max-w-4xl">
+      <motion.div className="h-full relative pb-80 w-full max-w-4xl">
         <motion.div
-          initial={{ height: 0 }}
-          animate={{ height: "100%" }}
-          transition={{ duration: 0.5 }}
           ref={bottomRef}
-          className="h-full mb-10 no-scrollbar overflow-auto rounded-xl px-8 bg-gradient-to-b from-transparent via-transparent to-white dark:to-slate-800"
+          className="h-full no-scrollbar overflow-auto dark:bg-transparent my-6"
         >
-          <div className="flex min-h-full flex-col justify-end pb-8 text-slate-950 dark:text-white">
+          <div className="flex min-h-full flex-col justify-end text-slate-950 dark:text-white">
             {messages.map((message: Message, index) => (
               <motion.div
                 key={`message-${index}`}
-                className="flex flex-col my-1"
+                className={`flex flex-row py-4 px-8 ${
+                  message.source === "client"
+                    ? "bg-transparent text-black dark:text-white my-8"
+                    : "bg-slate-200 dark:bg-slate-800 dark:text-slate-100 text-slate-950"
+                }`}
                 initial={{ opacity: 0, translateY: 20 }}
                 animate={{ opacity: 1, translateY: 0 }}
               >
-                <motion.p
-                  className={`p-4 shadow w-fit rounded-xl ${
-                    message.source === "client"
-                      ? "self-end bg-pink-500 text-white"
-                      : "bg-white text-slate-950"
-                  }`}
-                >
-                  {message.text}
-                </motion.p>
+                <p className="w-10 mr-8 text-right">
+                  {message.source === "client" ? "You" : "AI"}:
+                </p>
+                <p>{message.text}</p>
               </motion.div>
             ))}
-            {isLoading && <TypingIndicator />}
+            {isLoading && (
+              <div className="px-8">
+                <TypingIndicator />
+              </div>
+            )}
           </div>
         </motion.div>
         <motion.div
+          className="mt-10 px-10"
           initial={{ opacity: 0, translateY: 20 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ delay: 0.2 }}

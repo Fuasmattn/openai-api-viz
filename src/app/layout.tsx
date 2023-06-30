@@ -1,7 +1,7 @@
 "use client";
 import { Allotment } from "allotment";
 import { MwAppBar, MwAppBarTitle, MwIcon } from "@maibornwolff/mwui-react";
-import Sidepanel from "../components/Sidepanel";
+import Sidepanel from "../components/Sidepanel/Sidepanel";
 
 import "allotment/dist/style.css";
 import "@maibornwolff/mwui-stencil/dist/mwui-stencil/mwui-stencil.css";
@@ -10,6 +10,15 @@ import { ProcessVisualizationContextProvider } from "../context/ProcessVisualiza
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import "../globals.css";
+import { server } from "../mocks/server";
+
+if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
+  console.info("🟣 Using MSW to intercept API requests.");
+  server.listen();
+} else {
+  server.resetHandlers();
+  server.close();
+}
 
 export default function RootLayout({
   children,
@@ -21,7 +30,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="dark">
         <GlobalContextProvider>
           <ProcessVisualizationContextProvider>
             <>
@@ -92,7 +101,7 @@ export default function RootLayout({
                   {children}
                 </Allotment.Pane>
                 <Allotment.Pane
-                  preferredSize="1%"
+                  preferredSize="60%"
                   minSize={20}
                   className="h-full w-full"
                 >
