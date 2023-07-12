@@ -108,7 +108,7 @@ export default function RootLayout({
                   <Sidepanel />
                 </Allotment.Pane>
               </Allotment>
-            </>
+            </div>
           </ProcessVisualizationContextProvider>
         </GlobalContextProvider>
       </body>
