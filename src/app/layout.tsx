@@ -33,9 +33,9 @@ export default function RootLayout({
       <body className="dark">
         <GlobalContextProvider>
           <ProcessVisualizationContextProvider>
-            <>
+            <div className="w-screen h-screen">
               <Allotment className="w-screen h-screen">
-                <Allotment.Pane className="h-full w-full flex flex-col">
+                <Allotment.Pane className="h-screen w-screen flex flex-col">
                   <MwAppBar>
                     <div slot="start">
                       <MwIcon
